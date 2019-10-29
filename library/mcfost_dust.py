@@ -5,15 +5,15 @@ from astropy.io import fits
 # Class that will be saved locally ==============
 class Dust():
     def __init__(self, path = ''):
-        self.path   = path
+        self.path   = path + 'data_dust/'
         self.angles = [inp for inp in np.arange(0,181)]
 
 
     def read_lambda(self):
         """
-        Read lambdas used for dust/SED/Images computations
+        Read wavelengths used for dust/SED/Images computations
         """        
-        hdu = fits.open(self.path + 'data_dust/lambda.fits.gz')
+        hdu = fits.open(self.path + 'lambda.fits.gz')
         self.lambdas = hdu[0].data
   
 
@@ -21,7 +21,7 @@ class Dust():
         """
         Read polarisability curve
         """        
-        hdu = fits.open(self.path + 'data_dust/polarizability.fits.gz')
+        hdu = fits.open(self.path + 'polarizability.fits.gz')
         self.polar = hdu[0].data
 
 
@@ -29,7 +29,7 @@ class Dust():
         """
         Read phase function
         """        
-        hdu        = fits.open(self.path + 'data_dust/phase_function.fits.gz')
+        hdu        = fits.open(self.path + 'phase_function.fits.gz')
         self.phase = hdu[0].data
 
         
@@ -42,15 +42,22 @@ class Dust():
         self.ilambda = self.lambdas[index]
 
 
+
+
+# Associated plotters ============================================================
+    def make_canvas(self, xlabel = '', ylabel = '', fontsize = 16):
+        plt.xlabel(xlabel, fontsize = fontsize)
+        plt.ylabel(ylabel, fontsize = fontsize)
+        plt.xticks(fontsize = fontsize)
+        plt.yticks(fontsize = fontsize)
+
+
     def plot_phase(self, fontsize = 16, figsize=[20,7], plt_show = True):
         if plt_show:
             fig = plt.figure(figsize=figsize)
         
+        self.make_canvas(xlabel = 'Log10(Phase Function)', ylabel = 'Scattering Angle', fontsize = fontsize)
         plt.plot(self.angles, np.log10(self.phase))
-        plt.ylabel('Log10(Phase Function)', fontsize = fontsize)
-        plt.xlabel('Scattering Angle',      fontsize = fontsize)
-        plt.xticks(fontsize = fontsize)
-        plt.yticks(fontsize = fontsize)
         if plt_show:
             plt.show()    
 
@@ -59,10 +66,7 @@ class Dust():
         if plt_show:
             fig = plt.figure(figsize=figsize)
         plt.plot(self.angles, self.polar)
-        plt.ylabel('Polarizability',   fontsize = fontsize)
-        plt.xlabel('Scattering Angle', fontsize = fontsize)
-        plt.xticks(fontsize = fontsize)
-        plt.yticks(fontsize = fontsize)
+        self.make_canvas(xlabel = 'Polarizability', ylabel = 'Scattering Angle', fontsize = fontsize)
         plt.hlines(xmin=0,    xmax=180, y=0, linestyles=':')
         plt.vlines(ymin=-0.1, ymax=1.0, x=90, linestyles=':')
         if plt_show:
