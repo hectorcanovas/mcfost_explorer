@@ -1,0 +1,79 @@
+3.0                      mcfost version
+
+#Number of photon packages
+  1.28e+05                     nbr_photons_eq_th  : T computation
+  1.28e+04                     nbr_photons_lambda : SED computation
+  1.28e+05                     nbr_photons_image  : images computation
+
+#Wavelength
+  50 0.2 1000.0                n_lambda, lambda_min, lambda_max [mum]  Do not change this line unless you know what you are doing
+  T F T                        compute temperature?, compute sed?, use default wavelength grid for output ?
+  sz91.lambda                  wavelength file (if previous parameter is F)
+  F T                          separation of different contributions?, stokes parameters?
+
+#Grid geometry and size
+  1                            1 = cylindrical, 2 = spherical, 3 = Voronoi tesselation (this is in beta, please ask Christophe)
+  200 150 1 30                 n_rad (log distribution), nz (or n_theta), n_az, n_rad_in
+
+#Maps
+  129 129 701.0                grid (nx,ny), size [AU]
+  30 30 1 F                    RT: imin, imax, n_incl, centered ?
+  0.0 0.0 1                    RT: az_min, az_max, n_az angles
+  140.00                       distance (pc)
+  0.                           disk PA
+
+#Scattering method
+  0                            0=auto, 1=grain prop, 2=cell prop
+  1                            1=Mie, 2=hg (2 implies the loss of polarizarion)
+
+#Symetries
+  T                            image symmetry
+  T                            central symmetry
+  T                            axial symmetry (important only if N_phi > 1)
+
+#Disk physics
+  0 0.50 1.0                   dust_settling (0=no settling, 1=parametric, 2=Dubrulle, 3=Fromang), exp_strat, a_strat (for parametric settling)
+  F                            dust radial migration
+  F                            sublimate dust
+  F                            hydostatic equilibrium
+  F 1.0e-04                    viscous heating, alpha_viscosity
+
+#Number of zones : 1 zone = 1 density structure + corresponding grain properties
+  1
+
+#Density structure
+  1                            zone type : 1 = disk, 2 = tappered-edge disk, 3 = envelope, 4 = debris disk, 5 = wall
+  2.2e-04 100.0                dust mass,  gas-to-dust mass ratio
+  5 100 2.0                    scale height, reference radius (AU), unused for envelope, vertical profile exponent (only for debris disk)
+  60 0 150 178.6               Rin, edge, Rout, Rc (AU) Rc is only used for tappered-edge disks (Rout set to 8*Rc if Rout==0)
+  1.15                         flaring exponent, unused for envelope
+  -1.0 -1.0                    surface density exponent (or -gamma for tappered-edge disk), usually < 0, -gamma_exp (or alpha_in & alpha_out for debris disk)
+
+#Grain properties
+  1                            Number of species
+  DHS 2 1 0.25 1.0 0.8         Grain type (Mie/DHS), N_components, mixing rule (1 = EMT, 2 = coating), porosity, mass fraction, Vmax (for DHS)
+  Draine_Si_sUV.dat  0.80      Optical indices file, volume fraction
+  ac_opct.dat        0.20      Optical indices file, volume fraction
+  1                            Heating method : 1 = RE + LTE, 2 = RE + NLTE, 3 = NRE
+  0.05 1000.0 3.50 100         amin, amax [mum], aexp, n_grains (log distribution)
+
+#Molecular RT settings
+  T T T 15.0                   lpop, laccurate_pop, LTE, profile width (km.s^-1)
+  0.125                        v_turb (delta)
+  1                            nmol
+  co@xpol.dat 6                molecular data filename, level_max
+  3.9 50                       vmax (km.s^-1), n_speed
+  T 1.0e-04 abundance.fits.gz  cst molecule abundance ?, abundance, abundance file
+  T 1                          ray tracing ?,  number of lines in ray-tracing
+  2                            transition numbers
+
+#Star properties
+  1                               Number of stars
+  3800.0 1.4 0.5 0.0 0.0 0.0 F    Temp, radius (solar radius),M (solar mass),x,y,z (AU), is a blackbody?
+  lte4000-4.0.NextGen.fits.gz
+  0.0 2.2                         fUV, slope_fUV 
+ 
+Executed command line : /Users/hcanovas/Astrofisica/MCFOST/mcfost ../para_files/test_21_10_2019.para -img 0.5 -rt
+Wed Oct 30 08:34:31 CET 2019
+Darwin gaiam03.iuser.lan 18.5.0 Darwin Kernel Version 18.5.0: Mon Mar 11 20:40:32 PDT 2019; root:xnu-4903.251.3~3/RELEASE_X86_64 x86_64
+sha = 61ed5cc893660d65abff05186779e53638686a57
